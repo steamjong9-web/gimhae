@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>지속가능한 김해 만들기</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=IBM+Plex+Sans+KR:wght@400;600&display=swap">
+<style>
+:root{--bg:#eef4fa;--panel:#fff;--ink:#11243a;--muted:#546a80;--line:#cddae6;--accent:#ffc233;--l:80%;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0c1622;--panel:#132334;--ink:#e8f0f7;--muted:#9bb0c2;--line:#26405a;--l:30%;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0c1622;--panel:#132334;--ink:#e8f0f7;--muted:#9bb0c2;--line:#26405a;--l:30%;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"IBM Plex Sans KR",system-ui,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;line-height:1.5}
+main{max-width:780px;margin:0 auto;padding:16px 14px 40px}
+h1,.jua{font-family:Jua,"IBM Plex Sans KR",system-ui,sans-serif;font-weight:400}
+h1{font-size:2rem;margin:0}
+.sub{margin:0 0 12px;color:var(--muted)}
+.sky{display:flex;flex-wrap:wrap;gap:2px;justify-content:center;padding:8px;border-radius:12px;background:#0d1b2e;margin-bottom:12px}
+.sky span{font-size:1.3rem;filter:grayscale(1) brightness(.5);transition:filter .4s}
+.sky span.on{filter:none;text-shadow:0 0 12px #ffc233}
+.hud{display:grid;grid-template-columns:repeat(auto-fit,minmax(138px,1fr));gap:8px;margin-bottom:12px}
+.st{background:var(--panel);border:2px solid var(--line);border-radius:10px;padding:6px 10px}
+.st.ok{border-color:#1f9d62}
+.st span{font-size:.78rem;color:var(--muted)}
+.st b{display:block;font-size:.98rem}
+.m{height:6px;background:var(--line);border-radius:3px;overflow:hidden;margin-top:3px}
+.m i{display:block;height:100%;background:var(--accent)}
+.st.ok .m i{background:#1f9d62}
+.stage{position:relative;aspect-ratio:4/3;border-radius:14px;overflow:hidden;background:#9fd3ee;border:1px solid var(--line)}
+.stage svg{position:absolute;inset:0;width:100%;height:100%}
+#ov{position:absolute;inset:0;display:grid;grid-template-columns:repeat(12,1fr);grid-template-rows:repeat(9,1fr)}
+.tile{border:0;background:none;padding:0;cursor:pointer;display:flex;align-items:center;justify-content:center;border-radius:50%;color:var(--ink)}
+.tile.can{box-shadow:0 0 0 3px var(--accent);background:#ffc23355;animation:pulse 1s infinite}
+.tile.no{animation:shake .35s}
+.e{width:80%;aspect-ratio:1;border-radius:50%;background:var(--panel);border:2px solid #11243a;display:flex;align-items:center;justify-content:center;font-size:clamp(.8rem,3.4vw,1.4rem);animation:pop .3s}
+.e.from{box-shadow:0 0 0 4px var(--accent)}
+.e.hub{background:var(--accent);width:92%}
+@keyframes pop{from{transform:scale(.3)}to{transform:scale(1)}}
+@keyframes pulse{50%{box-shadow:0 0 0 6px #ffc23399}}
+@keyframes shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+@media (prefers-reduced-motion:reduce){.tile,.e{animation:none}}
+button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.leg{display:flex;flex-wrap:wrap;gap:4px 12px;margin:8px 0 0;font-size:.8rem;color:var(--muted)}
+.leg b{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-1px;margin-right:4px;background:hsl(var(--h) var(--s) var(--l))}
+.info{margin:10px 0;padding:10px 12px;border-left:5px solid var(--accent);background:var(--panel);border-radius:0 10px 10px 0;font-size:.92rem;min-height:3.4em}
+.pal{display:grid;grid-template-columns:repeat(auto-fit,minmax(138px,1fr));gap:8px}
+.pk{position:relative;text-align:left;font:inherit;color:var(--ink);background:var(--panel);border:2px solid var(--line);border-radius:10px;padding:8px 10px;cursor:pointer}
+.pk.on{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent)}
+.pk .em{font-size:1.5rem;display:block}
+.pk small{display:block;color:var(--muted);font-size:.76rem}
+.pk i{position:absolute;top:8px;right:10px;font-style:normal;font-weight:600}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.btn{font-family:Jua,sans-serif;font-size:1.15rem;padding:10px 22px;border-radius:10px;border:2px solid var(--ink);cursor:pointer;background:var(--accent);color:#11243a}
+.btn.g{background:transparent;color:var(--ink)}
+#toast{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);max-width:92%;background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;opacity:0;transition:.25s;pointer-events:none;z-index:5;text-align:center}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+.ov{position:fixed;inset:0;background:#000a;display:flex;align-items:center;justify-content:center;padding:14px;z-index:9;overflow:auto}
+.ov[hidden]{display:none}
+.card{background:var(--panel);border-radius:14px;max-width:560px;width:100%;max-height:92%;overflow:auto;padding:18px}
+.stars{font-size:2.4rem;letter-spacing:4px}
+.card table{width:100%;border-collapse:collapse;margin:8px 0;font-size:.92rem}
+.card th,.card td{border-bottom:1px solid var(--line);padding:6px;text-align:left}
+.pc{font-size:.86rem;margin:6px 0}
+.dy{display:grid;grid-template-columns:2.2rem 1fr auto;gap:8px;align-items:center;padding:8px 4px;border-bottom:1px solid var(--line);animation:pop .3s}
+.chip{font-weight:600;padding:2px 10px;border-radius:99px;font-size:.85rem;color:#11243a}
+.c1{background:#7ee0ae}.c2{background:#ffd166}.c3{background:#ff8a80}
+.top{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;margin-bottom:10px}.top input{font:inherit;width:6.5em;padding:4px 8px;border:2px solid var(--line);border-radius:8px;background:var(--panel);color:var(--ink)}
+.lv button{font:inherit;padding:5px 14px;border:2px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer}.lv button:first-child{border-radius:8px 0 0 8px}.lv button:last-child{border-radius:0 8px 8px 0}.lv button[aria-pressed=true]{background:var(--accent);color:#11243a;border-color:var(--accent);font-weight:600}
+h1{background:linear-gradient(90deg,#1f7a9c,#f5a30a);-webkit-background-clip:text;background-clip:text;color:transparent}
+.fl{stroke-dasharray:5 7;animation:fw .6s linear infinite}@keyframes fw{to{stroke-dashoffset:-12}}
+.cl ellipse{fill:#fff;opacity:.55}.cl{animation:dr 50s linear infinite}@keyframes dr{from{transform:translateX(-160px)}to{transform:translateX(700px)}}
+@media (prefers-reduced-motion:reduce){.fl,.cl{animation:none}}
+.e.re{border-color:#1f9d62}.e.on{box-shadow:0 0 10px 2px #ffc233}.e.off{border-style:dashed;opacity:.65}
+.fc{margin:0 0 10px;padding:8px 12px;border-radius:10px;background:#0d1b2e;color:#ffe08a;font-size:.88rem}
+.br{height:6px;border-radius:3px;background:var(--line);overflow:hidden}.br i{display:block;height:100%}.dy .br{margin-top:4px}
+.sc{display:grid;grid-template-columns:5.2rem 1fr 3.4rem;gap:6px;align-items:center;font-size:.88rem;margin:5px 0}.sc .br i{background:var(--accent)}
+.gr{flex:none;font-family:Jua,sans-serif;font-size:3.2rem;width:5rem;height:5rem;border-radius:50%;background:var(--accent);color:#11243a;display:flex;align-items:center;justify-content:center}
+textarea{width:100%;font:inherit;padding:8px;border:2px solid var(--line);border-radius:8px;background:var(--panel);color:var(--ink);margin-top:10px}
+#toast{z-index:20}.btn:disabled{opacity:.5;cursor:default}
+.shk{animation:shake .5s}.card .sky{margin:8px 0}
+.cfw{position:fixed;inset:0;pointer-events:none;overflow:hidden}.cfw i{position:absolute;top:-30px;font-style:normal;font-size:1.6rem;animation:fall 2.6s linear forwards}@keyframes fall{to{transform:translateY(110vh) rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.cfw{display:none}}
+</style>
+</head>
+<body>
+<main>
+<h1>지속가능한 김해 만들기</h1>
+<p class="sub">발전소를 알맞은 땅에 짓고, 전선으로 변전소(⚡)까지 이어 김해의 불을 켜세요. 마지막엔 시험 운전과 성적표가 기다려요!</p>
+<div class="top"><label>학번 <input id="sid" maxlength="8"></label><label>이름 <input id="nm" maxlength="8"></label><span class="lv" role="group" aria-label="난이도"><button data-v="쉬움" aria-pressed="false" onclick="setLv('쉬움')">쉬움</button><button data-v="보통" aria-pressed="true" onclick="setLv('보통')">보통</button><button data-v="어려움" aria-pressed="false" onclick="setLv('어려움')">어려움</button></span></div>
+<div class="sky" id="sky" aria-label="도시 불빛"></div>
+<div class="fc" id="fc"></div><div class="hud" id="hud"></div>
+<div class="stage">
+<svg viewBox="0 0 600 450" preserveAspectRatio="none" aria-hidden="true">
+<defs><filter id="goo" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="7"/><feColorMatrix values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 22 -10"/></filter></defs>
+<g id="land" filter="url(#goo)"></g><g id="deco"></g>
+<path d="M375,75 L325,125 L275,125 L225,175 L200,225 L175,275 L175,325 L225,375 L225,425" fill="none" stroke="#3d9bd6" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" opacity=".85"/>
+<text x="470" y="415" text-anchor="middle" font-size="15" fill="#fff" stroke="#1b5f86" stroke-width="3" paint-order="stroke">서부산 바다</text>
+<g class="cl"><ellipse cx="60" cy="60" rx="46" ry="14"/><ellipse cx="92" cy="52" rx="28" ry="12"/><ellipse cx="250" cy="200" rx="50" ry="13"/><ellipse cx="420" cy="330" rx="40" ry="11"/></g><g id="wr"></g></svg>
+<div id="ov" role="group" aria-label="김해 지도"></div>
+</div>
+<div class="leg" id="leg"></div>
+<div class="info" id="info" aria-live="polite"></div>
+<div class="pal" id="pal"></div>
+<textarea id="why" rows="2" placeholder="우리 김해 설계의 이유를 지리·환경·경제 측면에서 적어 보세요 (활동지 5번, 30자 이상이면 만점)"></textarea><div class="row"><button class="btn" onclick="done()">시험 운전 시작</button><button class="btn g" onclick="reset()">처음부터</button></div>
+<p class="sub" style="margin-top:12px">계약 조건: 변전소에 이어진 발전소로 하루 16,200 MWh 이상 · 신재생 55% 이상 · 4종류 이상. 건설비 2,170억 + 송전망 260억 한도, 조력·파력은 서부산 바다에 최대 3기. 전선은 길수록 비싸고 전기도 새요. 시험 운전에선 날씨·점검·송전선 사고가 닥쳐요!</p>
+</main>
+<div id="toast" aria-live="polite"></div>
+<div class="ov" id="qz" hidden role="dialog" aria-modal="true"><div class="card" id="qc"></div></div>
+<div class="ov" id="res" hidden role="dialog" aria-modal="true"><div class="card" id="card"></div></div>
+<script>
+const $=id=>document.getElementById(id),BUD=2170,LBUD=260,NEED=16200,HUB=54,LOSS=.006;
+const DIF={쉬움:{n:5,th:.8,v:4},보통:{n:7,th:.85,v:3},어려움:{n:9,th:.9,v:2}};
+const QZ={nuke:['원자력 발전의 에너지원은?','우라늄의 핵분열 열','연료의 연소','바람의 힘'],coal:['화력 발전이 지구온난화의 원인이 되는 까닭은?','연료를 태울 때 이산화탄소가 나와서','방사선이 나와서','소음이 커서'],lng:['LNG 발전은 석탄 발전보다 이산화탄소를 어떻게 배출할까?','더 적게','더 많이','똑같이'],tide:['조력 발전이 이용하는 것은?','밀물과 썰물의 높이 차','태양 빛','땅속의 열'],wind:['풍력 발전의 에너지 전환은?','바람의 운동 에너지 → 전기 에너지','열 에너지 → 전기 에너지','빛 에너지 → 전기 에너지'],hydro:['수력 발전은 물의 무엇으로 터빈을 돌릴까?','높은 곳의 위치(낙차) 에너지','핵분열 열','수소'],geo:['지열 발전은 무엇으로 터빈을 돌릴까?','땅속의 열과 증기','밀물과 썰물','바람'],bio:['바이오 에너지의 원료는?','생물체와 폐기물','우라늄','햇빛'],solar:['태양광 발전에서 빛을 전기로 바꾸는 것은?','태양전지(반도체)','터빈','댐'],fuel:['연료전지는 무엇의 화학 반응으로 전기를 만들까?','수소와 산소','우라늄','석탄']};
+const esc=t=>String(t).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+const T={s:['서부산 바다',205,60],r:['강변',185,50],i:['산업단지',40,22],h:['고지대',30,32],o:['온천지대',8,55],f:['개활지',92,45],c:['도시',255,24]};
+const G={h:'⛰️',c:'🏢',i:'🏗️',o:'♨',s:'〰️'};
+const MAP="....hhhh...."+"..hhohfrhh.."+".hfffrrfchhh"+"ffffrfccifhh"+"fofrriccifff"+".ffrricciff."+"..frrcciif.."+"..cfrfffsss."+"...frcfsss..";
+const P={
+nuke:{n:'원자력',e:'⚛️',mw:5000,c:500,re:0,ok:'r',site:'냉각수가 풍부한 강변',pro:'한 번에 많이, 안정적으로 발전',con:'방사성 폐기물과 사고 위험'},
+coal:{n:'화력(유연탄)',e:'🏭',mw:2000,c:150,re:0,ok:'ri',site:'강변·산업단지(철도·도로 가까움)',pro:'건설비 대비 발전량이 큼',con:'온실가스·미세먼지 배출'},
+lng:{n:'화력(LNG)',e:'💨',mw:1000,c:120,re:0,ok:'i',site:'가스관이 가까운 산업단지',pro:'석탄보다 배출이 적고 빨리 가동',con:'연료 수입, 가격 변동'},
+tide:{n:'조력·파력',e:'🌊',mw:500,c:80,re:1,ok:'s',site:'서부산 바다(최대 3기)',pro:'예측 가능한 청정 발전',con:'갯벌·해양 생태계 영향'},
+wind:{n:'풍력',e:'🌬️',mw:500,c:80,re:1,ok:'hf',site:'바람 센 고지대·개활지',pro:'연료가 필요 없는 청정 발전',con:'소음, 바람이 불규칙'},
+hydro:{n:'수력',e:'💧',mw:500,c:80,re:1,ok:'hr',site:'낙차 큰 고지대·강 상류',pro:'운영비가 싸고 출력 조절이 쉬움',con:'댐이 생태계를 바꿈'},
+geo:{n:'지열',e:'♨️',mw:500,c:80,re:1,ok:'o',site:'온천·지열 활동 지대',pro:'날씨와 상관없이 24시간 발전',con:'입지 한정, 지반 영향'},
+bio:{n:'바이오·폐기물',e:'🌿',mw:500,c:80,re:1,ok:'i',site:'원료가 가까운 산업단지',pro:'폐기물을 에너지로 재활용',con:'악취·배출물 관리 필요'},
+solar:{n:'태양광',e:'☀️',mw:500,c:80,re:1,ok:'fc',site:'일사량 많은 개활지·도시 옥상',pro:'조용하고 설치가 쉬움',con:'밤·흐린 날에는 발전 못함'},
+fuel:{n:'연료전지',e:'🔋',mw:500,c:80,re:1,ok:'ci',site:'도시·산업단지(가스관, 난방 수요처)',pro:'효율이 높고 소음이 적음',con:'수소 생산과 연료 비용'}};
+const EV=[
+{n:'맑은 날',e:'☀️',m:{solar:1.2},d:1,t:'태양광이 힘을 내요'},
+{n:'장마',e:'🌧️',m:{solar:.3},d:1,t:'햇빛이 줄어 태양광이 약해져요'},
+{n:'무풍',e:'😶',m:{wind:.1},d:1,t:'풍력이 거의 멈춰요'},
+{n:'태풍',e:'🌀',m:{wind:0,solar:.4,hydro:1.3},d:1,t:'풍력은 안전을 위해 정지!'},
+{n:'가뭄',e:'🏜️',m:{hydro:.3,nuke:.85},d:1,t:'수력·원자력 냉각수가 부족해요'},
+{n:'한파',e:'🥶',m:{solar:.7},d:1.1,t:'난방 때문에 수요가 늘어요'},
+{n:'폭염',e:'🔥',m:{nuke:.9},d:1.08,t:'에어컨 수요 증가, 냉각수도 뜨거워요'},
+{n:'연료비 폭등',e:'📈',m:{lng:.5,coal:.8},d:1,t:'연료 부족으로 화력이 줄어요'},
+{n:'정기 점검',e:'🔧',m:{},d:1,big:1,t:'가장 큰 발전소 1기가 멈춰요'},
+{n:'송전선 사고',e:'⚡',m:{},d:1,line:1,t:'전선 1개가 끊겨요! 그 선에 기댄 발전소는 고립'},
+{n:'가야문화축제',e:'🎆',m:{},d:1.1,t:'축제로 전력 수요가 급증해요'},
+{n:'평온한 날',e:'🙂',m:{},d:1,t:'별일 없는 하루'}];
+let grid,E,sel,from,tm,lv='보통',qa={},fc=[],RS,RD,hand=[],picked=0,BUYS=0;
+const CARDS={save:{n:'절전 캠페인',e:'💡',t:'가장 위험한 날 수요 −8%'},ess:{n:'에너지 저장(ESS)',e:'🔋',t:'가장 위험한 날 발전 +1,500 MWh'},buy:{n:'이웃 도시 전력 구입',e:'🤝',t:'위험한 날 +1,000 MWh (경제성 −3점)'},fix:{n:'긴급 정비팀',e:'🧰',t:'점검·송전선 사고가 난 날 +2,500 MWh (사고 없으면 못 씀)'}};Object.assign(G,{f:'🌳'});
+const xy=i=>[(i%12)*50+25,Math.floor(i/12)*50+25];
+const len=(a,b)=>Math.hypot(Math.floor(a/12)-Math.floor(b/12),a%12-b%12);
+const lcost=(a,b)=>Math.round(len(a,b)*4);
+function net(ex){const d={[HUB]:0};let ch=1;while(ch){ch=0;E.forEach(([a,b],k)=>{if(k===ex)return;const w=len(a,b);[[a,b],[b,a]].forEach(([u,v])=>{if(d[u]!==undefined&&(d[v]===undefined||d[u]+w<d[v]-1e-9)){d[v]=d[u]+w;ch=1}})})}return d}
+function calc(){const d=net(-1);let c=0,mw=0,rm=0,un=0,tot=0,ty=new Set(),n={};grid.forEach((k,i)=>{if(!k)return;const p=P[k];c+=p.c;tot++;n[k]=(n[k]||0)+1;if(d[i]!==undefined){mw+=p.mw;if(p.re)rm+=p.mw;ty.add(k)}else un++});return{c,mw,rm,un,tot,n,ty:ty.size,share:mw?rm/mw*100:0,lc:E.reduce((a,[x,y])=>a+lcost(x,y),0)}}
+const ok=s=>s.mw>=NEED&&s.share>=55&&s.ty>=4;
+function init(){
+  $('land').innerHTML=MAP.split('').map((t,i)=>t==='.'?'':`<rect x="${(i%12)*50-1}" y="${Math.floor(i/12)*50-1}" width="52" height="52" style="--h:${T[t][1]};--s:${T[t][2]}%;fill:hsl(var(--h) var(--s) var(--l))"/>`).join('');
+  $('deco').innerHTML=MAP.split('').map((t,i)=>G[t]&&(t!=='f'||i%3===0)?`<text x="${xy(i)[0]}" y="${xy(i)[1]+7}" text-anchor="middle" font-size="19" opacity=".5">${G[t]}</text>`:'').join('');
+  $('leg').innerHTML=Object.values(T).map(v=>`<span><b style="--h:${v[1]};--s:${v[2]}%"></b>${v[0]}</span>`).join('');
+  reset();
+}
+function reset(){grid=Array(MAP.length).fill(null);E=[];sel=null;from=null;$('res').hidden=true;qa={};newFc()}
+function newFc(){fc=EV.slice().sort(()=>Math.random()-.5).slice(0,DIF[lv].n);render()}
+function setLv(v){lv=v;document.querySelectorAll('.lv button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===v));reset()}
+function say(m){const t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(tm);tm=setTimeout(()=>t.classList.remove('show'),2800)}
+function bad(i){const el=document.querySelector(`[data-i="${i}"]`);if(!el)return;el.classList.add('no');setTimeout(()=>el.classList.remove('no'),400)}
+function pick(k){sel=sel===k?null:k;from=null;render()}
+function link(i){
+  if(from===null){from=i;say('어디로 이을까요? 다른 발전소나 변전소(⚡)를 눌러요.');return render()}
+  if(from===i){from=null;return render()}
+  const a=Math.min(from,i),b=Math.max(from,i),k=E.findIndex(e=>e[0]===a&&e[1]===b);
+  if(k>=0){E.splice(k,1);say('전선을 철거했어요.')}
+  else{const c=lcost(a,b);if(calc().lc+c>LBUD){from=null;render();return say('송전망 예산이 부족해요!')}E.push([a,b]);say(`🔌 전선 연결! ${c}억 원 (길수록 전기도 새요)`)}
+  from=null;render();
+}
+function tile(i){
+  if(sel==='wire'){if(i!==HUB&&!grid[i])return say('전선은 발전소나 변전소끼리 이어요.');return link(i)}
+  if(i===HUB)return say('여기는 변전소! 발전소를 전선으로 이어 주세요.');
+  if(grid[i]){grid[i]=null;E=E.filter(e=>!e.includes(i));say('철거했어요. 건설비가 돌아왔어요!');return render()}
+  if(!sel)return say('먼저 아래에서 발전소를 골라요.');
+  const p=P[sel],t=MAP[i],s=calc();
+  if(!p.ok.includes(t)){bad(i);return say(`${T[t][0]}에는 ${p.n} 발전소를 지을 수 없어요. 입지: ${p.site}`)}
+  if(s.c+p.c>BUD){bad(i);return say('건설 예산이 부족해요!')}
+  if(sel==='tide'&&(s.n.tide||0)>=3){bad(i);return say('조력·파력은 합쳐서 최대 3기예요.')}
+  grid[i]=sel;say(`${p.e} ${p.n} 건설! 이제 전선을 이어 주세요.`);render();if(!P[sel].re&&len(i,HUB)<=2.3)say('😠 주민 반대! 도심 가까이 지은 화력·원자력은 환경 점수가 깎여요.');if(!(sel in qa))quiz(sel);
+}
+function render(){
+  const s=calc(),D=net(-1),lit=Math.min(16,Math.floor(s.mw/NEED*16));$('fc').innerHTML=`📡 사건 예보 · ${DIF[lv].n}일 중 ${DIF[lv].v}일 공개: <b>${fc.slice(0,DIF[lv].v).map(x=>x.e+x.n).join(' · ')}</b> (순서는 몰라요) · 나머지 ${DIF[lv].n-DIF[lv].v}일은 깜짝!`;
+  $('sky').innerHTML=Array.from({length:16},(_,i)=>`<span class="${i<lit?'on':''}">🏠</span>`).join('');
+  const st=(l,v,pct,g)=>`<div class="st ${g?'ok':''}"><span>${l}</span><b>${v}</b><div class="m"><i style="width:${Math.min(100,pct)}%"></i></div></div>`;
+  $('hud').innerHTML=st('남은 건설 예산',`${BUD-s.c}억`,s.c/BUD*100,0)+st('남은 송전망 예산',`${LBUD-s.lc}억`,s.lc/LBUD*100,0)+st('발전량(연결 기준)',`${s.mw.toLocaleString()} / 16,200`,s.mw/NEED*100,s.mw>=NEED)+st('신재생 (55%↑)',s.share.toFixed(1)+'%',s.share/55*100,s.share>=55)+st('종류 (4종↑)',s.ty+'종',s.ty/4*100,s.ty>=4)+st('미연결 발전소',s.un+'기',s.un*25,s.tot>0&&!s.un);
+  $('ov').innerHTML=MAP.split('').map((t,i)=>{
+    if(t==='.')return '<span></span>';
+    if(i===HUB)return `<button class="tile" data-i="${i}" onclick="tile(${i})" aria-label="변전소"><span class="e hub ${from===i?'from':''}">⚡</span></button>`;
+    const p=grid[i],can=sel&&sel!=='wire'&&!p&&P[sel].ok.includes(t);
+    return `<button class="tile ${can?'can':''}" data-i="${i}" onclick="tile(${i})" aria-label="${T[t][0]}${p?' '+P[p].n:''}">${p?`<span class="e ${P[p].re?'re':''} ${D[i]!==undefined?'on':'off'} ${from===i?'from':''}">${P[p].e}</span>`:''}</button>`}).join('');
+  $('wr').innerHTML=E.map(([a,b])=>{const[x1,y1]=xy(a),[x2,y2]=xy(b);return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#11243a" stroke-width="6" stroke-linecap="round"/><line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" class="fl" stroke="#ffc233" stroke-width="3" stroke-linecap="round"/>`}).join('');
+  $('pal').innerHTML=`<button class="pk ${sel==='wire'?'on':''}" onclick="pick('wire')"><span class="em">🔌</span><b>송전선</b><small>두 곳을 차례로 누르기 · 1칸 4억</small></button>`+Object.keys(P).map(k=>{const p=P[k];return `<button class="pk ${sel===k?'on':''}" onclick="pick('${k}')"><span class="em">${p.e}</span><b>${p.n}</b><small>${p.mw.toLocaleString()} MWh · ${p.c}억${p.re?'':' · 비재생'}</small><i>${s.n[k]||0}기</i></button>`}).join('');
+  const p=P[sel];
+  $('info').innerHTML=sel==='wire'?'<b>🔌 송전선</b> · 발전소(또는 변전소)를 누르고 이을 곳을 누르세요. 같은 두 곳을 다시 이으면 철거돼요. 발전소끼리 이어 가도 되고, 전선을 그물처럼 이중으로 놓으면 사고에 강해요.':p?`<b>${p.e} ${p.n}</b> · 입지: ${p.site}<br>장점: ${p.pro} · 단점: ${p.con}`:'발전소를 고르면 지을 수 있는 땅이 반짝여요. 지은 발전소를 누르면 철거돼요.';
+}
+function done(){
+  const s=calc();
+  if(!ok(s)){const m=[];if(s.mw<NEED)m.push(`연결된 발전량 ${(NEED-s.mw).toLocaleString()} MWh 부족`);if(s.share<55)m.push(`신재생 ${(55-s.share).toFixed(1)}%p 부족`);if(s.ty<4)m.push(`연결된 종류 ${4-s.ty}종 더 필요`);if(s.un)m.push(`미연결 ${s.un}기`);return say('아직 시험 운전을 못 해요: '+m.join(' · '))}
+  if(!picked){pickCards();return}picked=0;const dv=DIF[lv],ev=fc.slice().sort(()=>Math.random()-.5),days=[];
+  ev.forEach(x=>{
+    const ex=x.line&&E.length?Math.floor(Math.random()*E.length):-1,d=net(ex),o=[];
+    grid.forEach((k,i)=>{if(k&&d[i]!==undefined)o.push(P[k].mw*(x.m[k]??1)*(1-Math.min(.3,LOSS*d[i])))});
+    let out=o.reduce((a,b)=>a+b,0);if(x.big&&o.length)out-=Math.max(...o);
+    out=Math.round(out);const dem=Math.round(NEED*x.d);days.push({...x,out,dem,r:out/dem});
+  });
+  BUYS=0;hand.forEach(c=>{const cand=days.filter(d=>!d.cu&&d.r<1&&(c!=='fix'||d.big||d.line)).sort((a,b)=>a.r-b.r)[0];if(!cand)return;const C=CARDS[c];cand.cu=C.e+C.n;if(c==='save')cand.dem=Math.round(cand.dem*.92);else cand.out+=c==='ess'?1500:c==='buy'?1000:2500;if(c==='buy')BUYS++;cand.r=cand.out/cand.dem});
+  $('card').innerHTML='<h2 class="jua" style="margin:0">시험 운전 ⚡</h2><div class="sky" id="ms"></div><div id="dys"></div><div id="vd"></div>';$('res').hidden=false;
+  days.forEach((d,i)=>setTimeout(()=>{const c=d.r>=1?1:d.r>=dv.th?2:3;$('dys').insertAdjacentHTML('beforeend',`<div class="dy"><span style="font-size:1.6rem">${d.e}</span><div><b>${i+1}일차 ${d.n}</b><br><small>${d.t} · 발전 ${d.out.toLocaleString()} / 수요 ${d.dem.toLocaleString()} MWh${d.cu?` · ${d.cu} 사용!`:''}</small><div class="br"><i class="c${c}" style="width:${Math.min(100,d.r*100)}%"></i></div></div><span class="chip c${c}">${['','안정','부족 경고','정전!'][c]}</span></div>`);$('ms').innerHTML=Array.from({length:16},(_,j)=>`<span class="${j<Math.round(Math.min(1,d.r)*16)?'on':''}">🏠</span>`).join('');if(c===3){$('card').classList.add('shk');setTimeout(()=>$('card').classList.remove('shk'),500)}if(i===days.length-1)setTimeout(()=>verdict(s,days),700)},i*800));
+}
+function verdict(s,days){
+  const w=days.reduce((a,b)=>b.r<a.r?b:a);RS=s;RD=days;
+  if(w.r>=DIF[lv].th)return win(s,days);
+  const h=w.big?'가장 큰 발전소 하나에 기대면 점검 한 번에 흔들려요. 작은 발전소 여러 개로 나눠 보세요.':w.line?'전선 한 줄에 발전소가 몰려 있어요. 전선을 그물처럼 이중으로 이어 보세요.':Object.keys(w.m).length?'날씨에 출력이 달라지는 발전소(태양광·풍력·수력)에 몰려 있어요. 지열·바이오·연료전지·조력도 섞어 보세요.':'여유 발전량이 부족해요. 발전량을 늘리고 전선 길이를 줄여 보세요.';
+  $('vd').innerHTML=`<h2 class="jua" style="margin:10px 0 0">💥 정전! 시험 운전 실패</h2><p>${w.n}에 ${(w.dem-w.out).toLocaleString()} MWh가 모자랐어요. ${h}</p><div class="row"><button class="btn" onclick="$('res').hidden=true">설계 고치기</button><button class="btn g" onclick="newFc();done()">같은 설계로 다시 시험</button><button class="btn g" onclick="report(RS,RD,0)">성적표 보기</button></div>`;
+}
+function win(s,days){setTimeout(confetti,100);
+  const warn=days.filter(d=>d.r<1).length,stars=1+(warn<=3?1:0)+(s.share>=60?1:0),left=BUD-s.c;
+  const used=Object.keys(s.n).map(k=>`<div class="pc">${P[k].e} <b>${P[k].n} ${s.n[k]}기</b> · 장점: ${P[k].pro} · 단점: ${P[k].con}</div>`).join('');
+  $('card').innerHTML=`<h2 class="jua" style="margin:0">계약 체결! 김해에 불이 켜졌어요 🎉</h2>
+  <div class="stars" aria-label="별 ${stars}개">${'★'.repeat(stars)}${'☆'.repeat(3-stars)}</div>
+  <div class="pc">★ 7일 무정전 · ${warn<=3?'★':'☆'} 부족 경고 3회 이하(${warn}회) · ${s.share>=60?'★':'☆'} 신재생 60% 이상</div>
+  <table><tr><th>하루 최대 총 발전량</th><td>${s.mw.toLocaleString()} MWh</td></tr><tr><th>총 건설비용</th><td>${s.c.toLocaleString()}억 원</td></tr><tr><th>남은 비용</th><td>${left.toLocaleString()}억 원</td></tr><tr><th>송전선 비용</th><td>${s.lc}억 원 (전선 ${E.length}개)</td></tr><tr><th>신재생 발전 용량 비율</th><td>${s.share.toFixed(1)}%</td></tr></table>
+  <b>내가 지은 발전소</b>${used}
+  <div class="pc" style="color:var(--muted)">활동지의 지도 활동에서 위치별 장단점을 적을 때 참고하세요.</div>
+  <div class="row"><button class="btn" onclick="report(RS,RD,1)">성적표 보기</button><button class="btn g" onclick="$('res').hidden=true">더 다듬기</button><button class="btn g" onclick="reset()">새로 도전</button></div>`;
+}
+function quiz(k){
+  const q=QZ[k],o=q.slice(1).map((t,j)=>({t,r:j===0})).sort(()=>Math.random()-.5);qa[k]=0;
+  $('qc').innerHTML=`<h2 class="jua" style="margin:0">${P[k].e} ${P[k].n} 기술 퀴즈</h2><p>${q[0]}</p>`+o.map(x=>`<button class="btn g" style="display:block;width:100%;margin:6px 0" onclick="ans('${k}',${x.r?1:0})">${x.t}</button>`).join('')+'<div id="qr" class="pc"></div>';$('qz').hidden=false;
+}
+function ans(k,r){
+  qa[k]=r;document.querySelectorAll('#qc .btn.g').forEach(x=>x.disabled=true);
+  $('qr').innerHTML=(r?'✅ 정답! 기술 지식 점수를 얻었어요.':`❌ 아쉬워요. 정답: ${QZ[k][1]}`)+'<div class="row"><button class="btn" onclick="$(\'qz\').hidden=true">계속 짓기</button></div>';
+}
+function report(s,days,pass){
+  const avg=days.reduce((a,d)=>a+Math.min(1,d.r),0)/days.length,left=BUD-s.c,ks=Object.values(qa),why=$('why').value.trim();
+  const R=[['안정성',Math.round(35*Math.max(0,(avg-.5)/.5)),35],['환경',Math.max(0,Math.round(15*Math.min(1,s.share/70)+10*Math.min(1,s.ty/7))-3*grid.filter((k,i)=>k&&!P[k].re&&len(i,HUB)<=2.3).length),25],['경제성',Math.max(0,Math.round(10*(1-s.lc/LBUD)+10*Math.min(1,left/150))-3*BUYS),20],['기술 지식',ks.length?Math.round(10*ks.filter(Boolean).length/ks.length):0,10],['설계 이유',why.length>=30?10:why.length>=10?5:0,10]];
+  let tot=R.reduce((a,r)=>a+r[1],0);if(!pass)tot=Math.min(tot,59);
+  const g=tot>=90?'A':tot>=80?'B':tot>=70?'C':tot>=60?'D':'F',tt=tot>=95?'김해 에너지 마에스트로 🏆':tot>=90?'에너지 설계 전문가':tot>=80?'유능한 설계자':tot>=70?'성장하는 설계자':tot>=60?'도전하는 설계자':'다시 도전해요!';
+  const bd=badges(s,days,pass);let best=tot;try{best=Math.max(+localStorage.getItem('gbest')||0,tot);localStorage.setItem('gbest',best)}catch(e){}
+  const sum=`[지속가능한 김해] ${$('sid').value||'학번?'} ${$('nm').value||'이름?'} | 난이도 ${lv} | ${tot}점(${g}) ${pass?'계약 성공':'시험 운전 실패'} | ${R.map(r=>r[0]+' '+r[1]+'/'+r[2]).join(', ')} | 발전량 ${s.mw}MWh, 신재생 ${s.share.toFixed(1)}%, 건설비 ${s.c}억, 송전 ${s.lc}억 | 설계 이유: ${why||'(미작성)'}`;
+  $('card').innerHTML=`<div style="display:flex;gap:14px;align-items:center"><div class="gr">${g}</div><div><h2 class="jua" style="margin:0">${tot}점 · ${tt}</h2><div class="pc">${esc($('sid').value)} ${esc($('nm').value)} · ${lv} · 내 최고 ${best}점${pass?'':' (실패 시 최대 59점)'}</div></div></div>`+R.map(r=>`<div class="sc"><span>${r[0]}</span><div class="br"><i style="width:${r[1]/r[2]*100}%"></i></div><b>${r[1]}/${r[2]}</b></div>`).join('')+`<div class="pc"><b>🏆 획득 배지 ${bd.length}개</b><br>${bd.length?bd.join('<br>'):'아직 없어요. 다음엔 도전해 보세요!'}</div>`+'<textarea id="sum" rows="4" readonly></textarea><div class="row"><button class="btn" onclick="cp()">결과 복사</button><button class="btn g" onclick="$(\'res\').hidden=true">닫기</button><button class="btn g" onclick="reset()">새로 도전</button></div>';
+  $('sum').value=sum;$('res').hidden=false;
+}
+function pickCards(){
+  hand=[];const mx=lv==='쉬움'?3:lv==='보통'?2:1;
+  $('qc').innerHTML=`<h2 class="jua" style="margin:0">🃏 비상 카드 고르기</h2><p class="pc">시험 운전 중 가장 위험한 날에 자동으로 쓰여요. 최대 ${mx}장까지 고를 수 있어요. 어떤 사건이 올지 예보를 떠올려 보세요!</p>`+Object.keys(CARDS).map(k=>`<button class="pk" style="width:100%;margin:5px 0" id="cd-${k}" onclick="tog('${k}',${mx})"><span class="em" style="display:inline">${CARDS[k].e}</span> <b>${CARDS[k].n}</b><small>${CARDS[k].t}</small></button>`).join('')+`<div class="row"><button class="btn" onclick="$('qz').hidden=true;picked=1;done()">출발!</button></div>`;
+  $('qz').hidden=false;
+}
+function tog(k,mx){const i=hand.indexOf(k);if(i>=0)hand.splice(i,1);else if(hand.length<mx)hand.push(k);else say(`카드는 최대 ${mx}장!`);Object.keys(CARDS).forEach(c=>$('cd-'+c).classList.toggle('on',hand.includes(c)))}
+function badges(s,days,pass){
+  const b=[],left=BUD-s.c,ks=Object.values(qa),nodes=Object.keys(net(-1)).length;
+  if(pass)b.push('🏅 첫 계약 성공');
+  if(pass&&!(s.n.coal||s.n.lng))b.push('🌱 화력 없는 김해');
+  if(E.length>nodes-1)b.push('🕸️ 그물망 설계 (전선으로 고리 만들기)');
+  if(s.ty>=7)b.push('🌈 다양성 마스터 (7종 이상)');
+  if(pass&&days.every(d=>d.r>=1))b.push('✨ 완벽한 운전 (부족 경고 0회)');
+  if(left>=100)b.push('💰 알뜰 설계 (남은 건설비 100억 이상)');
+  if(E.length&&s.lc<=120)b.push('✂️ 짧고 굵은 전선 (송전 120억 이하)');
+  if(ks.length>=5&&ks.every(Boolean))b.push('🧠 퀴즈 전부 정답');
+  return b;
+}
+function confetti(){const c=document.createElement('div');c.className='cfw';c.innerHTML=Array.from({length:26},()=>`<i style="left:${Math.random()*100}%;animation-delay:${Math.random()*1.5}s">${['🎉','🎊','⚡','✨','💡'][Math.floor(Math.random()*5)]}</i>`).join('');$('res').appendChild(c);setTimeout(()=>c.remove(),4500)}
+function cp(){const t=$('sum');t.select();try{navigator.clipboard.writeText(t.value)}catch(e){document.execCommand('copy')}say('복사했어요! 선생님께 제출하세요.')}
+init();
+</script>
+</body>
+</html>
